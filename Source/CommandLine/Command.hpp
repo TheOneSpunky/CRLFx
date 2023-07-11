@@ -24,15 +24,34 @@
 #include <string_view>
 #include <vector>
 #include <span>
+#include <optional>
 
 namespace CRLFx::CommandLine {
   class Command {
   public:
     Command() noexcept;
-    Command(const char& flag, std::string_view name, std::string_view description, std::span<const std::string> arguments = {}, std::span<const Command> dependencies = {}) noexcept;
+    Command(const char& flag, std::string_view name, std::string_view description, std::optional<std::span<const std::string>> arguments = std::nullopt, std::optional<std::span<const Command>> dependencies = std::nullopt);
     Command(const Command& other) noexcept;
     Command(Command&& other) noexcept;
     virtual ~Command() noexcept = default;
+
+    auto getFlag() const noexcept -> const char&;
+    auto getName() const noexcept -> std::string_view;
+    auto getDescription() const noexcept -> std::string_view;
+    auto getArguments() const noexcept -> std::span<const std::string>;
+    auto getDependencies() const noexcept -> std::span<const Command>;
+
+    auto getFlagCopy() const noexcept -> char;
+    auto getNameCopy() const noexcept -> std::string;
+    auto getDescriptionCopy() const noexcept -> std::string;
+    auto getArgumentsCopy() const noexcept -> std::vector<std::string>;
+    auto getDependenciesCopy() const noexcept -> std::vector<Command>;
+
+    auto setFlag(const char& flag) noexcept -> void;
+    auto setName(std::string_view name) noexcept -> void;
+    auto setDescription(std::string_view description) noexcept -> void;
+    auto setArguments(std::span<const std::string> arguments) noexcept -> void;
+    auto setDependencies(std::span<const Command> dependencies) noexcept -> void;
 
   private:
     char                     m_flag;
