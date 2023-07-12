@@ -30,7 +30,7 @@ namespace CRLFx::CommandLine {
   class Command {
   public:
     Command() = delete;
-    Command(const char& flag, std::string_view name, std::string_view description, std::optional<std::span<const std::string>> arguments = std::nullopt, std::optional<std::span<const Command>> dependencies = std::nullopt);
+    Command(const char& flag, std::string_view name, std::string_view description = "No description provided.", std::optional<std::span<const std::string>> arguments = std::nullopt, std::optional<std::span<const Command>> dependencies = std::nullopt);
     Command(const Command& other) noexcept;
     Command(Command&& other) noexcept;
     virtual ~Command() noexcept = default;
@@ -47,6 +47,7 @@ namespace CRLFx::CommandLine {
     auto getArgumentsCopy() const noexcept -> std::vector<std::string>;
     auto getDependenciesCopy() const noexcept -> std::vector<Command>;
 
+    auto setDescription(std::string_view description) noexcept -> void;
     auto setArguments(std::span<const std::string> arguments) noexcept -> void;
     auto setDependencies(std::span<const Command> dependencies) noexcept -> void;
 

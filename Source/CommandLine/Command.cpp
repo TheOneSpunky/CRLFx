@@ -89,6 +89,10 @@ namespace CRLFx::CommandLine {
     return m_dependencies;
   }
 
+  auto Command::setDescription(std::string_view description) noexcept -> void {
+    m_description = description;
+  }
+
   auto Command::setArguments(std::span<const std::string> arguments) noexcept -> void {
     m_arguments = std::vector<std::string>{arguments.begin(), arguments.end()};
   }
