@@ -19,21 +19,24 @@
  */
 
 #include "Command.hpp"
+#include <stdexcept>
 
 namespace CRLFx::CommandLine {
-  Command::Command() noexcept
-    : m_flag         { '\0' },
-      m_name         { "" },
-      m_description  { "" },
-      m_arguments    {},
-      m_dependencies {} {}
-
   Command::Command(const char& flag, std::string_view name, std::string_view description, std::optional<std::span<const std::string>> arguments, std::optional<std::span<const Command>> dependencies)
     : m_flag         { flag },
       m_name         { name },
       m_description  { description },
       m_arguments    { arguments ? std::vector<std::string>{arguments->begin(), arguments->end()} : std::vector<std::string>{} },
-      m_dependencies { dependencies ? std::vector<Command>{dependencies->begin(), dependencies->end()} : std::vector<Command>{} } {}
+      m_dependencies { dependencies ? std::vector<Command>{dependencies->begin(), dependencies->end()} : std::vector<Command>{} } {
+    if (m_flag == '\0')
+      throw std::invalid_argument("Command flag cannot be null.");
+    else if (!(m_flag >= '0' && m_flag <= '9') && !(m_flag >= 'A' && m_flag <= 'Z') && !(m_flag >= 'a' && m_flag <= 'z'))
+      throw std::invalid_argument("Command flag must be alphanumeric.");
+    else if (m_name.empty())
+      throw std::invalid_argument("Command name cannot be empty.");
+    else if (m_name.length() < 2)
+      throw std::invalid_argument("Command name must be at least two characters long.");
+  }
 
   Command::Command(const Command& other) noexcept
     : m_flag         { other.m_flag },
