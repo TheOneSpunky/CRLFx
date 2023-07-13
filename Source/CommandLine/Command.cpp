@@ -52,6 +52,30 @@ namespace CRLFx::CommandLine {
       m_arguments    { std::move(other.m_arguments) },
       m_dependencies { std::move(other.m_dependencies) } {}
 
+  auto Command::hasFlag() const noexcept -> bool {
+    return (m_flag != '\0');
+  }
+
+  auto Command::hasName() const noexcept -> bool {
+    return !m_name.empty();
+  }
+
+  auto Command::hasDescription() const noexcept -> bool {
+    return !m_description.empty();
+  }
+
+  auto Command::hasArguments() const noexcept -> bool {
+    return !m_arguments.empty();
+  }
+
+  auto Command::hasDependencies() const noexcept -> bool {
+    return !m_dependencies.empty();
+  }
+
+  auto Command::isValid() const noexcept -> bool {
+    return (hasFlag() && hasName());
+  }
+
   auto Command::getFlag() const noexcept -> const char& {
     return m_flag;
   }

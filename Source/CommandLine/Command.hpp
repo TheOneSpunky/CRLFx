@@ -35,6 +35,14 @@ namespace CRLFx::CommandLine {
     Command(Command&& other) noexcept;
     virtual ~Command() noexcept = default;
 
+    auto hasFlag() const noexcept -> bool;
+    auto hasName() const noexcept -> bool;
+    auto hasDescription() const noexcept -> bool;
+    auto hasArguments() const noexcept -> bool;
+    auto hasDependencies() const noexcept -> bool;
+
+    auto isValid() const noexcept -> bool;
+
     auto getFlag() const noexcept -> const char&;
     auto getName() const noexcept -> std::string_view;
     auto getDescription() const noexcept -> std::string_view;
